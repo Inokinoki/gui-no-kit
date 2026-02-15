@@ -15,6 +15,8 @@ import platform
 import tempfile
 import unittest
 
+import pytest
+
 from gui_no_kit import XpraGUITestCase
 
 
