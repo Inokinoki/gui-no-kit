@@ -18,9 +18,65 @@ import unittest
 from gui_no_kit import XpraGUITestCase
 
 
+class TestBasicApp(XpraGUITestCase):
+    """Example tests for basic applications on each platform."""
+
+    def get_test_app(self):
+        """Get platform-specific test application."""
+        system = platform.system()
+        if system == "Linux":
+            return "xeyes"
+        elif system == "Windows":
+            return "notepad.exe"
+        elif system == "Darwin":  # macOS
+            return "TextEdit"
+        else:
+            raise NotImplementedError(f"No test app defined for {system}")
+
+    def test_app_opens(self):
+        """Test that the basic app displays correctly."""
+        app = self.get_test_app()
+        gui = self.start_gui(app)
+        gui.wait_for_canvas()
+
+        # Take screenshot for visual verification
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
+            screenshot_path = f.name
+        try:
+            gui.screenshot(screenshot_path)
+            print(f"Screenshot saved to: {screenshot_path}")
+            assert os.path.exists(screenshot_path), "Screenshot file not created"
+        finally:
+            if os.path.exists(screenshot_path):
+                os.unlink(screenshot_path)
+
+        # Verify canvas is rendering
+        canvas = gui.page.locator("canvas")
+        assert canvas.is_visible(), "Canvas is not visible"
+
+    def test_app_canvas_size(self):
+        """Test that app canvas has reasonable dimensions."""
+        app = self.get_test_app()
+        gui = self.start_gui(app)
+        gui.wait_for_canvas()
+
+        width, height = gui.get_canvas_size()
+        assert width > 0, f"Canvas width should be positive, got {width}"
+        assert height > 0, f"Canvas height should be positive, got {height}"
+        assert width >= 100, f"Canvas width seems too small: {width}"
+        assert height >= 100, f"Canvas height seems too small: {height}"
+
+    def test_server_running(self):
+        """Test that server is running after start."""
+        app = self.get_test_app()
+        gui = self.start_gui(app)
+        self.assert_server_running()
+
+
 class TestXeyes(XpraGUITestCase):
     """Example tests for xeyes application."""
 
+    @unittest.skipUnless(platform.system() == "Linux", "Linux only")
     def test_xeyes_opens(self):
         """Test that xeyes displays correctly."""
         gui = self.start_gui("xeyes")
@@ -61,6 +117,8 @@ class TestXeyes(XpraGUITestCase):
 class TestXcalc(XpraGUITestCase):
     """Example tests for xcalc application."""
 
+    @unittest.skipUnless(platform.system() == "Linux", "Linux only")
+
     def test_xcalc_opens(self):
         """Test that xcalc displays correctly."""
         gui = self.start_gui("xcalc")
@@ -87,6 +145,8 @@ class TestXcalc(XpraGUITestCase):
 class TestXterm(XpraGUITestCase):
     """Example tests for xterm application."""
 
+    @unittest.skipUnless(platform.system() == "Linux", "Linux only")
+
     def test_xterm_opens(self):
         """Test that xterm displays correctly."""
         # Use -e to run a simple command that exits
@@ -99,6 +159,8 @@ class TestXterm(XpraGUITestCase):
 
 class TestMultipleApps(XpraGUITestCase):
     """Example tests for managing multiple applications."""
+
+    @unittest.skipUnless(platform.system() == "Linux", "Linux only")
 
     def test_sequential_apps(self):
         """Test starting multiple apps sequentially."""
@@ -122,6 +184,8 @@ class TestMultipleApps(XpraGUITestCase):
 class TestServerLogs(XpraGUITestCase):
     """Example tests for server log capture."""
 
+    @unittest.skipUnless(platform.system() == "Linux", "Linux only")
+
     def test_log_capture(self):
         """Test that server logs are captured."""
         gui = self.start_gui("xeyes")
@@ -143,6 +207,7 @@ class TestPytestStyle:
     These tests demonstrate the pytest fixture API.
     """
 
+    @pytest.mark.skipif(platform.system() != "Linux", reason="Linux only")
     def test_xeyes_with_fixtures(self, xpra_server):
         """Test xeyes using pytest fixtures."""
         import tempfile
@@ -169,6 +234,7 @@ class TestPytestStyle:
         finally:
             client.disconnect()
 
+    @pytest.mark.skipif(platform.system() != "Linux", reason="Linux only")
     def test_xcalc_with_gui_client_fixture(self, gui_client):
         """Test using the gui_client fixture."""
         client = gui_client.start_and_connect("xcalc")

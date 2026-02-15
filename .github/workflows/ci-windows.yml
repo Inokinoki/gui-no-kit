@@ -1,4 +1,4 @@
-name: CI
+name: CI - Windows
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -20,8 +20,7 @@ jobs:
 
     - name: Install system dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y xpra xvfb xeyes
+        choco install xpra
 
     - name: Install dependencies
       run: |
@@ -31,13 +30,11 @@ jobs:
     - name: Install Playwright browsers
       run: playwright install chromium
 
-    - name: Start Xvfb
-      run: |
-        export DISPLAY=:99
-        Xvfb :99 -screen 0 1024x768x24 &
-        sleep 2
+    - name: Run import tests
+      run: pytest tests/test_imports.py -v
+
+    - name: Run integration tests
+      run: pytest tests/test_basic_app.py tests/test_cross_platform.py -v
 
     - name: Run example tests
-      run: |
-        export DISPLAY=:99
-        pytest src/xpra_gui_test/examples/ -v
+      run: pytest src/xpra_gui_test/examples/example_tests.py src/xpra_gui_test/examples/example_tests_windows.py -v
