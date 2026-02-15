@@ -9,8 +9,8 @@ import os
 import unittest
 from typing import Optional
 
-from gui_no_kit.server import XpraServer
-from gui_no_kit.client import PlaywrightClient
+from .server import XpraServer
+from .client import PlaywrightClient
 
 
 class XpraGUITestCase(unittest.TestCase):

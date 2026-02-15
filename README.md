@@ -975,10 +975,7 @@ spec:
 
 ## Contributing
 
-This framework is part of the Xpra project. Contributions are welcome!
-
-- Source: https://github.com/Xpra-org/xpra
-- Issues: https://github.com/Xpra-org/xpra/issues
+This framework is using the Xpra project but not part of it. Contributions are welcome!
 
 ## License
 

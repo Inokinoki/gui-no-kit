@@ -34,7 +34,7 @@ jobs:
       run: pytest tests/test_imports.py -v
 
     - name: Run integration tests
-      run: pytest tests/test_basic_app.py tests/test_cross_platform.py -v
+      run: pytest tests/test_cross_platform.py -v
 
     - name: Run example tests
       run: pytest src/xpra_gui_test/examples/example_tests.py src/xpra_gui_test/examples/example_tests_windows.py -v

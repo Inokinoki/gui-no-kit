@@ -18,7 +18,7 @@ import tempfile
 import time
 from typing import List
 
-from gui_no_kit.logs import LogCapture
+from .logs import LogCapture
 
 
 class XpraServer:

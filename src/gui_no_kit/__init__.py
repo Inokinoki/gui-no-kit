@@ -7,10 +7,10 @@ and Playwright browser automation.
 
 __version__ = "0.1.0"
 
-from gui_no_kit.server import XpraServer
-from gui_no_kit.client import PlaywrightClient
-from gui_no_kit.test_case import XpraGUITestCase
-from gui_no_kit.logs import LogCapture
+from .server import XpraServer
+from .client import PlaywrightClient
+from .test_case import XpraGUITestCase
+from .logs import LogCapture
 
 __all__ = [
     "XpraServer",
