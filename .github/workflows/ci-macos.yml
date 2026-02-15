@@ -37,4 +37,4 @@ jobs:
       run: pytest tests/test_cross_platform.py -v
 
     - name: Run example tests
-      run: pytest src/xpra_gui_test/examples/example_tests.py src/xpra_gui_test/examples/example_tests_macos.py -v
+      run: pytest src/gui_no_kit/examples/example_tests.py src/gui_no_kit/examples/example_tests_macos.py -v
