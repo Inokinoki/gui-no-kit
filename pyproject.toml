@@ -1,0 +1,143 @@
+[project]
+name = "gui-no-kit"
+version = "0.0.1"
+description = "Automated GUI testing kit for desktop applications using Xpra to expose GUI app to Playwright"
+readme = "README.md"
+authors = [
+    { name = "Inoki", email = "veyx.shaw@gmail.com" }
+]
+maintainers = [
+    { name = "Inoki", email = "veyx.shaw@gmail.com" }
+]
+license = { text = "GPL-2.0-or-later" }
+requires-python = ">=3.10"
+keywords = [
+    "ai-testing",
+    "xpra",
+    "gui",
+    "testing",
+    "automation",
+    "playwright",
+    "x11",
+    "cross-platform",
+    "ci-cd",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Quality Assurance",
+    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "pytest>=7.0",
+    "playwright>=1.40",
+    "psutil>=5.9",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.1.0",
+    "black>=23.0",
+    "mypy>=1.0",
+    "pytest-cov>=4.0",
+    "pytest-html>=4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Xpra-org/gui-no-kit"
+Documentation = "https://github.com/Xpra-org/gui-no-kit/blob/main/README.md"
+Repository = "https://github.com/Xpra-org/gui-no-kit"
+Issues = "https://github.com/Xpra-org/gui-no-kit/issues"
+Changelog = "https://github.com/Xpra-org/gui-no-kit/blob/main/CHANGELOG.md"
+
+[build-system]
+requires = ["hatchling>=1.0.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gui_no_kit"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/README.md",
+    "/LICENSE",
+    "/CHANGELOG.md",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["src/gui_no_kit/examples"]
+python_files = ["example_tests.py", "test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+]
+markers = [
+    "gui: marks tests as GUI tests",
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "linux: marks tests as Linux-only",
+    "macos: marks tests as macOS-only",
+    "windows: marks tests as Windows-only",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E741",  # ambiguous variable name
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["gui_no_kit"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+exclude = [
+    "examples/",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/examples/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
