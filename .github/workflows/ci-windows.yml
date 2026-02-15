@@ -20,7 +20,11 @@ jobs:
 
     - name: Install system dependencies
       run: |
-        choco install xpra
+        # Download and install Xpra for Windows
+        $xpraUrl = "https://xpra.org/dists/windows/Xpra-x86_64.msi"
+        $installerPath = "$env:TEMP\Xpra-x86_64.msi"
+        Invoke-WebRequest -Uri $xpraUrl -OutFile $installerPath
+        Start-Process msiexec.exe -ArgumentList "/i $installerPath /quiet /norestart" -Wait
 
     - name: Install dependencies
       run: |

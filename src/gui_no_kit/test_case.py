@@ -125,12 +125,15 @@ class XpraGUITestCase(unittest.TestCase):
         super().run(result)
 
         # Check if test failed
-        if result and result.failures:
-            # Get the last failure
-            if result.failures:
+        try:
+            if result and hasattr(result, 'failures') and result.failures:
+                # Get the last failure
                 test, traceback = result.failures[-1]
                 if test == self:
                     self._run_failed_hook(result.failures[-1])
+        except AttributeError:
+            # pytest compatibility - result object is different
+            pass
 
     def _run_failed_hook(self, failure_info) -> None:
         """
