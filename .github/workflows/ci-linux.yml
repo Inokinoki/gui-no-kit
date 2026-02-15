@@ -21,8 +21,9 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        # Add Xpra PPA for latest version
-        sudo add-apt-repository ppa:xpra-org/xpra -y
+        # Install Xpra from official repository
+        sudo apt-get install -y software-properties-common
+        sudo add-apt-repository -y ppa:xpra-org/stable
         sudo apt-get update
         sudo apt-get install -y xpra xvfb x11-apps
 
