@@ -984,4 +984,4 @@ This framework is part of the Xpra project. Contributions are welcome!
 
 GPL v2 or later (same as Xpra)
 
-See COPYING file for details.
+This is subjected to be GPLv2 because it will work in the same memory space/process. But since your application is run in another process, it's isolated from the GPL. Only the test code might be contaminated.
